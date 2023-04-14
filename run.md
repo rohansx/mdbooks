@@ -1,10 +1,10 @@
-#To create book folder 
+## To create book folder 
 
 ```html
 mdbook init sample_name
 ```
 
-#To run 
+## To run 
 
 Change the directory and go into the created book folder with cd command
 
