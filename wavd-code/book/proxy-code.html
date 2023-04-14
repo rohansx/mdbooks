@@ -1,0 +1,1446 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Proxy - WAVD-CODE</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="server-code.html"><strong aria-hidden="true">1.</strong> Server</a></li><li class="chapter-item expanded "><a href="proxy-code.html" class="active"><strong aria-hidden="true">2.</strong> Proxy</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">WAVD-CODE</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="proxy-code"><a class="header" href="#proxy-code">Proxy-code</a></h1>
+<h2 id="1-wavs_proxyjs"><a class="header" href="#1-wavs_proxyjs">1. wavs_proxy.js</a></h2>
+<pre><code class="language-typescript">
+const hoxy = require('hoxy');
+const ejs = require('ejs');
+const fs = require('fs');
+const { program } = require('commander');
+
+program
+  .option('-s, --scan &lt;type&gt;', 'Scan Type (&quot;full&quot; or &quot;selective&quot;)', 'full')
+  .option('-t, --tls_cert', 'Enable scan for SSL/TLS Certificates')
+  .option('-x, --xss', 'Enable scan for Cross-Site Scripting')
+  .option('-p, --phishing', 'Enable scan for potential Phishing')
+  .option('-o, --open_redirect', 'Enable scan for Open Redirects')  
+
+program.parse(process.argv);
+const options = program.opts();
+
+scan_options = {
+  tls_cert: false,
+  xss: false,
+  phishing: false,
+  open_redirect: false
+};
+
+if (options.scan === 'full') {
+  scan_options = {
+    tls_cert: true,
+    xss: true,
+    phishing: true,
+    open_redirect: true
+  }
+}
+else if (options.scan === 'selective') {
+  if (options.tls_cert) {
+    scan_options[&quot;tls_cert&quot;] = true;
+  }
+  if (options.xss) {
+    scan_options[&quot;xss&quot;] = true;
+  }
+  if (options.phishing) {
+    scan_options[&quot;phishing&quot;] = true;
+  }
+  if (options.open_redirect) {
+    scan_options[&quot;open_redirect&quot;] = true;
+  }
+}
+
+
+homepage_str = &quot;&quot;;
+
+fs.readFile(&quot;./templates/homepage.html&quot;, (error, data) =&gt; {
+  if(error) {
+      throw error;
+  }
+  homepage_str = data.toString();
+});
+
+var server_port = 9000;
+var proxy_port = 8000;
+
+
+// Proxy server to direct requests to Virtual Server
+var proxy = hoxy.createServer().listen(proxy_port, function() {
+  console.log('The Proxy is listening on port', proxy_port, &quot;\n&quot;);
+});
+
+// Intercept &amp; modify request
+
+// If root path, display landing page template
+proxy.intercept({
+  phase: 'request',
+  url: '/'
+}, (req, res) =&gt; {
+  res.headers = {'Content-Type': 'text/html'};
+  res.statusCode = 200;
+  // res.string = &quot;&lt;html&gt;&lt;body&gt;&lt;h2&gt;Landing Page!&lt;/h2&gt;&lt;/body&gt;&lt;/html&gt;&quot;;
+  res.string = homepage_str;
+})
+
+// For all other requests, redirect to virtual server
+proxy.intercept({
+  phase: 'request'
+}, (req, res) =&gt; {
+  query_url = req.url.slice(1);
+  
+  // Modify the request to call the required endpoint with correct query param
+  req.method = 'POST';
+  req.hostname = 'localhost';         // Domain of Virtual Server
+  req.port = server_port;             // Port on which Virtual Server is running
+  req.url = '/v1/scan/?url=' + query_url  // Appropriate endpoint on Virtual Server
+  req.json = scan_options
+})
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+// Intercept &amp; modify response
+proxy.intercept({
+  phase: 'response', 
+  as: 'json'
+}, async (req, res) =&gt; {
+  // console.log(&quot;Response intercepted by proxy:&quot;, res.json)
+
+  // Use JSON to manipulate template...
+  html_str = await ejs.renderFile(&quot;templates/dashboard.ejs&quot;, res.json);
+
+  // Now return the filled template
+  res.headers = {'Content-Type': 'text/html'};
+  res.statusCode = 200;
+  res.string = html_str;
+  // console.log(&quot;Modified Response:&quot;, res.string, &quot;\n=====================================================&quot;)
+})
+
+</code></pre>
+<h2 id="2-templates"><a class="header" href="#2-templates">2. templates</a></h2>
+<h3 id="21-dashboardejs"><a class="header" href="#21-dashboardejs">2.1 dashboard.ejs</a></h3>
+<pre><code class="language-scss">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=RocknRoll+One&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot;&gt;
+&lt;style&gt;
+* {
+  box-sizing: border-box;
+  font-family: 'RocknRoll One', sans-serif;
+}
+
+.column-img {
+  float: left;
+  width: 25%;
+  border: 30px;
+  height: 300px;
+  position: relative;
+  /* left: 10px; */
+  align-items: center;
+  text-align: center;
+  display: block;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  width: 80%;
+  height: 80%;
+}
+.column {
+  float: left;
+  width: 75%;
+  padding: 20px;
+  border: 30px;
+  height: 300px;
+  position: relative;
+}
+
+.row{
+    margin: 10px;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: &quot;&quot;;
+  display: table;
+  clear: both;
+}
+.bg-yellow {
+    background: #E3AE57;
+}
+
+.bg-skin {
+	background: #f1e2d7;
+}
+.bg-red {
+    background: #E9724C;
+}
+.text-white {
+	color: #FFF;
+}
+.text-dark {
+    color: #000000;
+}
+h2 {
+    text-align: center;
+}
+.heading {
+    text-align: center;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #E3AE57;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color:  #E9724C;
+  color: white;
+}
+
+button {
+    display: inline-block;
+    /* width: ; */
+    transition: all 0.5s;
+    cursor: pointer;
+    /* margin: 5px; */
+}
+#proceed {
+    background-color:#000;
+    border-radius: 10px;
+    border: 3px double #000;
+    color: #f1e2d7;
+    text-align: center;
+    /* font-size: inherit; */
+    /* padding: 10px; */
+    padding-left: 20px;
+    padding-right: 20px;
+
+}
+#phish_param {
+    background-color:#b68434;
+    /* border-radius: 10px; */
+    border: 2px double #cccccc;
+    border-radius: 5px;
+    padding: 5pt;
+    /* color: #eeeeee; */
+    text-align: center;
+    font-size: inherit;
+}
+
+#xss_details {
+    background-color:#c9b4a5;
+
+    border: 2px double;
+    border-color: #121212;;
+    border-radius: 5px;
+    padding: 5pt;
+    color: #121212;
+    text-align: center;
+    font-size: inherit;
+}
+
+#tls_cert_details {
+    background-color:#b85230;
+    /* border-radius: 10px; */
+    border: 2px double #cccccc;
+    border-radius: 5px;
+    padding: 5pt;
+    /* color: #eeeeee; */
+    text-align: center;
+    font-size: inherit;
+}
+button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+/* button:hover {
+background-color: #f7c2f9;
+} */
+button:hover span {
+    padding-right: 25px;
+}
+#proceed:hover span {
+    padding-left: 25px;
+}
+button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+td, th {
+  border: 3px solid #f1e2d7;
+  text-align: center;
+  padding: 8px;
+}
+
+#footer {
+    position: absolute;
+    /* display: inline; */
+    padding: 10px 10px 10px 10px;
+    bottom: 20px;
+    width: 95%;
+    /* Height of the footer*/ 
+    height: 40px;
+    /* background: grey; */
+}
+p {
+    padding: 10px 10px 0px 10px;
+}
+
+i {
+    vertical-align: middle;
+}
+
+a {
+  color: #eee;
+  text-decoration: none;
+}
+&lt;/style&gt;
+
+&lt;title&gt;WAVD Scan Results&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class=&quot;heading&quot;&gt; 
+    &lt;h1&gt;WAVD Dashboard: Scan Results&lt;/h1&gt;
+    &lt;h3&gt;URL: &lt;%= url %&gt;&lt;/h3&gt;
+&lt;/div&gt;
+
+
+
+&lt;% if (locals.phishing) { %&gt;
+&lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;column-img&quot;&gt;
+      &lt;img src=&quot;https://i.ibb.co/rtpgqVD/phishing.jpg&quot; class=&quot;center&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;column bg-yellow text-white&quot; style=&quot;text-align: center;&quot;&gt;
+        &lt;h2&gt;Potential Phishing Attempts&lt;/h2&gt;
+        &lt;% if (phishing.result === &quot;Legitimate&quot;) { %&gt;
+            &lt;p&gt;&lt;i class=&quot;material-icons&quot; style=&quot;color: green; &quot;&gt;done&lt;/i&gt; &lt;b&gt;Legitimate:&lt;/b&gt; This website does not seem to have any major characteristics of a phishing domain&lt;/p&gt;
+        &lt;% } %&gt;
+        &lt;% if (phishing.result === &quot;Suspicious&quot;) { %&gt;
+            &lt;p&gt;&lt;i class=&quot;material-icons&quot; style=&quot;color: yellow;&quot;&gt;error&lt;/i&gt; &lt;b&gt;Suspicious:&lt;/b&gt; This website may be phishy, although we do not have conclusive evidence&lt;/p&gt;
+        &lt;% } %&gt;
+        &lt;% if (phishing.result === &quot;Phishing&quot;) { %&gt;
+            &lt;p&gt;&lt;i class=&quot;material-icons&quot; style=&quot;color: red;&quot;&gt;dangerous&lt;/i&gt; &lt;b&gt;Phishing:&lt;/b&gt; This website seems to be &lt;i&gt;phishy&lt;/i&gt;! We recommend not to visit it&lt;/p&gt;
+        &lt;% } %&gt;
+
+      
+      &lt;!-- Trigger/Open The Modal --&gt;
+        &lt;button id=&quot;phish_param&quot;&gt;&lt;span class=&quot;text-white&quot;&gt;Click here for Detailed Analysis&lt;/span&gt;&lt;/button&gt; 
+        &lt;div id=&quot;footer&quot; style=&quot;text-align: center;&quot;&gt;
+            &lt;b&gt;Quick Links:&lt;/b&gt; &lt;a target=&quot;_blank&quot; href=&quot;https://www.imperva.com/learn/application-security/phishing-attack-scam&quot;&gt;Introduction to Phishing Attacks&lt;/a&gt; | &lt;a target=&quot;_blank&quot; href=&quot;https://www.globalsign.com/en/blog/how-to-spot-a-fake-website&quot;&gt;How to Spot a Phishing Website&lt;/a&gt;
+        &lt;/div&gt;      
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;% } %&gt;
+
+&lt;% if (locals.tls_cert) { %&gt;
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;column bg-red text-white&quot; style=&quot;text-align: center;&quot;&gt;
+    &lt;h2&gt;SSL/TLS Certificate Validation&lt;/h2&gt;
+    &lt;% if (tls_cert.result === &quot;Valid&quot;) { %&gt;
+        &lt;p&gt;&lt;i class=&quot;material-icons&quot; style=&quot;color: green; &quot;&gt;done&lt;/i&gt; &lt;b&gt;Valid:&lt;/b&gt; This website possesses a valid SSL/TLS certificate&lt;/p&gt;
+    &lt;% } %&gt;
+    &lt;% if (tls_cert.result === &quot;Valid (with Warnings)&quot;) { %&gt;
+        &lt;p&gt;&lt;i class=&quot;material-icons&quot; style=&quot;color: yellow; &quot;&gt;error&lt;/i&gt; &lt;b&gt;Valid (with Warnings):&lt;/b&gt; This website has valid SSL/TLS certificate, but the issuing authority or expiry may be questionable&lt;/p&gt;
+    &lt;% } %&gt;
+    &lt;% if (tls_cert.result === &quot;Invalid&quot;) { %&gt;
+        &lt;p&gt;&lt;i class=&quot;material-icons&quot; style=&quot;color: rgb(214, 0, 0);&quot;&gt;dangerous&lt;/i&gt; &lt;b&gt;Invalid:&lt;/b&gt; This website does not have valid SSL/TLS certificate&lt;/p&gt;
+    &lt;% } %&gt;
+
+    &lt;button id=&quot;tls_cert_details&quot;&gt;&lt;span class=&quot;text-white&quot;&gt;Click here for Certificate Details&lt;/span&gt;&lt;/button&gt; 
+    &lt;div id=&quot;footer&quot;&gt;
+        &lt;b&gt;Quick Links:&lt;/b&gt; &lt;a target=&quot;_blank&quot; href=&quot;https://protonmail.com/blog/tls-ssl-certificate/&quot;&gt;Working of SSL/TLS Certificates&lt;/a&gt; | &lt;a target=&quot;_blank&quot; href=&quot;https://www.venafi.com/blog/how-do-certificate-chains-work&quot;&gt;Certificate Chains&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;column-img&quot;&gt;
+    &lt;img src=&quot;https://i.ibb.co/W3rfyHc/tls.png&quot;  class=&quot;center&quot;&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;% } %&gt;
+
+&lt;% if (locals.open_redir) { %&gt;
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;column-img&quot;&gt;
+    &lt;img src=&quot;https://i.ibb.co/RDWx8Gs/or.jpg&quot; class=&quot;center&quot;&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;column text-white&quot; style=&quot;background-color:#000; text-align: center;&quot;&gt;
+    &lt;h2&gt;Open Redirects&lt;/h2&gt;
+    
+    &lt;% if (open_redir.result === &quot;Not Vulnerable&quot;) { %&gt;
+        &lt;p&gt;&lt;i class=&quot;material-icons&quot; style=&quot;color: rgb(75, 255, 75); &quot;&gt;done&lt;/i&gt; &lt;b&gt;Not Vulnerable:&lt;/b&gt; This website has not been identified with any Open Redirect vulnerabilities&lt;/p&gt;
+    &lt;% } else if (open_redir.result === &quot;Header Based Redirection&quot; || open_redir.result === &quot;Open Redirection&quot;) { %&gt;
+      &lt;p&gt;&lt;i class=&quot;material-icons&quot; style=&quot;color: red; &quot;&gt;dangerous&lt;/i&gt; &lt;b&gt;Vulnerability Detected:&lt;/b&gt; This website has been identified with &lt;i&gt;&lt;%= open_redir.result %&gt;&lt;/i&gt; &lt;/p&gt;
+
+      &lt;% if (open_redir.result === &quot;Header Based Redirection&quot;) { %&gt;
+        &lt;p&gt;&lt;b&gt;Query Parameter for Redirection:&lt;/b&gt; &lt;%= open_redir.details.parameter %&gt;&lt;/p&gt;
+      &lt;% } %&gt;
+    &lt;% } else { %&gt;
+      &lt;p&gt;&lt;i class=&quot;material-icons&quot; style=&quot;color: yellow; &quot;&gt;error&lt;/i&gt; &lt;b&gt;Client Error:&lt;/b&gt; &lt;i&gt;&lt;%= open_redir.result %&gt;&lt;/i&gt; &lt;/p&gt;
+    &lt;% } %&gt;  
+
+
+
+    &lt;div id=&quot;footer&quot;&gt;
+      &lt;b&gt;Quick Links:&lt;/b&gt; &lt;a target=&quot;_blank&quot; href=&quot;https://portswigger.net/kb/issues/00500100_open-redirection-reflected&quot;&gt;Open Redirect (Reflected)&lt;/a&gt; | &lt;a target=&quot;_blank&quot; href=&quot;https://blog.detectify.com/2019/05/16/the-real-impact-of-an-open-redirect/&quot;&gt;Impact of Open Redirects&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;% } %&gt;  
+
+&lt;% if (locals.xss) { %&gt;
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;column bg-skin&quot; style=&quot;text-align: center;&quot;&gt;
+    &lt;h2&gt;Cross-Site Scripting (XSS)&lt;/h2&gt;
+    &lt;% if (xss.result === &quot;XSS Not Detected&quot;) { %&gt;
+        &lt;p&gt;&lt;i class=&quot;material-icons&quot; style=&quot;color: green; &quot;&gt;done&lt;/i&gt; &lt;b&gt;&lt;%= xss.result %&gt;:&lt;/b&gt; This website has no identifiable client-side XSS vulnerabilities&lt;/p&gt;
+    &lt;% } %&gt;
+    &lt;% if (xss.result === &quot;XSS Detected&quot;) { %&gt;
+        &lt;p&gt;&lt;i class=&quot;material-icons&quot; style=&quot;color: red;&quot;&gt;dangerous&lt;/i&gt; &lt;b&gt;&lt;%= xss.result %&gt;:&lt;/b&gt; &lt;i&gt;DOM-based XSS&lt;/i&gt; vulnerability has been detected in this website&lt;/p&gt;
+        &lt;button id=&quot;xss_details&quot;&gt;&lt;span&gt;Click here for Details&lt;/span&gt;&lt;/button&gt;
+    &lt;% } %&gt;
+    &lt;div id=&quot;footer&quot;&gt;
+      &lt;b&gt;Quick Links:&lt;/b&gt; &lt;a style=&quot;color: #121212;&quot; target=&quot;_blank&quot; href=&quot;https://portswigger.net/web-security/cross-site-scripting&quot;&gt;Types of XSS&lt;/a&gt; | &lt;a style=&quot;color: #121212;&quot; target=&quot;_blank&quot; href=&quot;https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html&quot;&gt;XSS Prevention&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;column-img&quot;&gt;
+    &lt;img src=&quot;https://i.ibb.co/C83FMKp/xss.jpg&quot; class=&quot;center&quot;&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;% } %&gt;  
+
+&lt;% if (locals.phishing) { %&gt;
+&lt;div id=&quot;phish_modal&quot; class=&quot;modal&quot;&gt;
+
+    &lt;!-- Modal content --&gt;
+    &lt;div class=&quot;modal-content text-dark&quot;&gt;
+      &lt;div class=&quot;modal-header&quot;&gt;
+        &lt;span class=&quot;close&quot; id=&quot;phish_modal_close&quot;&gt;&amp;times;&lt;/span&gt;
+        &lt;h2&gt;Phishing Detection Features&lt;/h2&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;modal-body&quot; style=&quot;text-align: center;&quot;&gt;
+        &lt;!-- &lt;p&gt;Some text in the Modal Body&lt;/p&gt; --&gt;
+        &lt;% if (phishing.details.prechecks === &quot;passed&quot;) { %&gt;
+            &lt;table&gt;
+                &lt;tr&gt;
+                &lt;th&gt;Paramter&lt;/th&gt;
+                &lt;th&gt;Description&lt;/th&gt;
+                &lt;th&gt;Status&lt;/th&gt;
+                &lt;/tr&gt;
+                &lt;% for (let i = 0; i &lt; phishing.details.features.length; i++) { %&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;&lt;%= phishing.details.features[i].feature %&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;%= phishing.details.features[i].desc %&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;%= phishing.details.features[i].value %&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;% } %&gt;
+            &lt;/table&gt;
+        &lt;% } else { %&gt;
+            &lt;h3&gt;Failed Prechecks:&lt;/h3&gt;
+
+            &lt;% for (let i = 0; i &lt; phishing.details.failed_prechecks.length; i++) { %&gt;
+            &lt;p&gt;&lt;%= phishing.details.failed_prechecks[i] %&gt;&lt;/p&gt;
+            &lt;% } %&gt;
+            
+        &lt;% } %&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;modal-footer&quot;&gt;
+        &lt;!-- &lt;h3&gt;M&lt;/h3&gt; --&gt;
+      &lt;/div&gt;
+    &lt;/div&gt; 
+&lt;/div&gt;
+&lt;% } %&gt;  
+
+&lt;% if (locals.tls_cert) { %&gt;
+&lt;div id=&quot;tls_modal&quot; class=&quot;modal&quot;&gt;
+
+    &lt;!-- Modal content --&gt;
+    &lt;div class=&quot;modal-content text-dark&quot;&gt;
+      &lt;div class=&quot;modal-header&quot;&gt;
+        &lt;span class=&quot;close&quot; id=&quot;tls_modal_close&quot;&gt;&amp;times;&lt;/span&gt;
+        &lt;h2&gt;SSL/TLS Certificate Details&lt;/h2&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;modal-body&quot; style=&quot;text-align: center; padding-top: 10px&quot;&gt;
+        &lt;h3&gt;Certificate Chain&lt;/h3&gt;
+        &lt;% for (let i = 0; i &lt; tls_cert.details.length; i++) { %&gt;
+            &lt;table&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;b&gt;Subject&lt;/b&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;%= tls_cert.details[i].subject %&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;b&gt;Expires On&lt;/b&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;%= tls_cert.details[i].expires %&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;b&gt;Issuer&lt;/b&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;%= tls_cert.details[i].issuer %&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+            &lt;br&gt;
+        &lt;% } %&gt;
+
+        &lt;div style=&quot;text-align: center;&quot;&gt;
+            &lt;% if (tls_cert.warnings.length &gt; 0) { %&gt;
+                &lt;hr&gt;
+                &lt;h3&gt;&lt;i class=&quot;material-icons&quot; style=&quot;color: rgb(255, 186, 58); &quot;&gt;error&lt;/i&gt;Warnings&lt;/h3&gt;
+    
+                &lt;% for (let i = 0; i &lt; tls_cert.warnings.length; i++) { %&gt;
+                    &lt;p&gt;&lt;%= tls_cert.warnings[i] %&gt;&lt;/p&gt;
+                &lt;% } %&gt;
+            &lt;% } %&gt;
+    
+            &lt;% if (tls_cert.errors.length &gt; 0) { %&gt;
+                &lt;hr&gt;
+                &lt;h3&gt;&lt;i class=&quot;material-icons&quot; style=&quot;color: red; &quot;&gt;dangerous&lt;/i&gt;Errors&lt;/h3&gt;
+    
+                &lt;% for (let i = 0; i &lt; tls_cert.errors.length; i++) { %&gt;
+                    &lt;p&gt;&lt;%= tls_cert.errors[i] %&gt;&lt;/p&gt;
+                &lt;% } %&gt;
+            &lt;% } %&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;modal-footer&quot;&gt; 
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;% } %&gt;
+
+
+&lt;% if (locals.xss) { %&gt;
+  &lt;div id=&quot;xss_modal&quot; class=&quot;modal&quot;&gt;
+  
+      &lt;div class=&quot;modal-content text-dark&quot;&gt;
+        &lt;div class=&quot;modal-header&quot;&gt;
+          &lt;span class=&quot;close&quot; id=&quot;xss_modal_close&quot;&gt;&amp;times;&lt;/span&gt;
+          &lt;h2&gt;XSS Details&lt;/h2&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;modal-body&quot; style=&quot;text-align: center; padding-top: 10px&quot;&gt;
+          
+          &lt;h3&gt;Details of the Forms detected with XSS Vulnerability:&lt;/h3&gt;
+          &lt;% for (let i = 0; i &lt; xss.details.length; i++) { %&gt;
+            &lt;table&gt;
+              &lt;tr&gt;
+                &lt;th&gt;Element Name&lt;/th&gt;
+                &lt;th&gt;Element Type&lt;/th&gt;
+                &lt;th&gt;Value Injected&lt;/th&gt;
+              &lt;/tr&gt;
+              &lt;% for (let j = 0; j &lt; xss.details[i].inputs.length; j++) { %&gt;
+                &lt;% if (xss.details[i].inputs[j].name) { %&gt;
+                  &lt;tr&gt;
+                    &lt;td&gt;&lt;%= xss.details[i].inputs[j].name %&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;%= xss.details[i].inputs[j].type %&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;%= xss.details[i].inputs[j].value %&gt;&lt;/td&gt;
+                  &lt;/tr&gt;
+                &lt;% } %&gt;
+              &lt;% } %&gt;
+            &lt;/table&gt;
+            &lt;br/&gt;
+            &lt;p&gt;&lt;b&gt;Form Action:&lt;/b&gt; &lt;%= xss.details[i].action %&gt;&lt;/p&gt;
+            &lt;p&gt;&lt;b&gt;Form Submission Method:&lt;/b&gt; &lt;%= xss.details[i].method %&gt;&lt;/p&gt;
+            &lt;br/&gt;
+            &lt;hr/&gt;
+          &lt;% } %&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;modal-footer&quot;&gt; 
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;% } %&gt;
+
+&lt;div class=&quot;heading&quot; style=&quot;margin-bottom: 20px;&quot;&gt;
+    &lt;br&gt;
+    &lt;button id=&quot;proceed&quot;&gt;&lt;span&gt;&lt;a target=&quot;_blank&quot; style=&quot;color: #fff; text-decoration: none;&quot; href=&quot;&lt;%= url %&gt;&quot;&gt;&lt;h2&gt;Proceed to URL&lt;/h2&gt;&lt;/a&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;!-- &lt;footer style=&quot;width:100%; background-color: #030100; text-align: center; color: #fff; padding: 15px; font-size: 11pt; position: fixed; left: 0; bottom: 0;&quot;&gt; 
+  Created by Rohan Sharma, Shubham Yadav, Dhiraj Mishra
+&lt;/footer&gt; --&gt;
+
+&lt;% if (locals.phishing) { %&gt;
+&lt;script&gt;
+    /////////////////////// Phishing Modal ///////////////////////////
+    // Get the modal
+    var phish_modal = document.getElementById(&quot;phish_modal&quot;);
+    
+    // Get the button that opens the modal
+    var phish_btn = document.getElementById(&quot;phish_param&quot;);
+    
+    // Get the &lt;span&gt; element that closes the modal
+    var phish_modal_close = document.getElementById(&quot;phish_modal_close&quot;);
+    
+    // When the user clicks the button, open the modal 
+    phish_btn.onclick = function() {
+        phish_modal.style.display = &quot;block&quot;;
+    }
+    
+    // When the user clicks on &lt;span&gt; (x), close the modal
+    phish_modal_close.onclick = function() {
+        phish_modal.style.display = &quot;none&quot;;
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == phish_modal) {
+        phish_modal.style.display = &quot;none&quot;;
+      }
+    }
+&lt;/script&gt;
+&lt;% } %&gt;
+
+&lt;% if (locals.tls_cert) { %&gt;
+&lt;script&gt;
+    //////////////////////// TLS Modal //////////////////////////////
+    var tls_modal = document.getElementById(&quot;tls_modal&quot;);
+    
+    // Get the button that opens the modal
+    var tls_btn = document.getElementById(&quot;tls_cert_details&quot;);
+    
+    // Get the &lt;span&gt; element that closes the modal
+    var tls_modal_close = document.getElementById(&quot;tls_modal_close&quot;);
+    
+    // When the user clicks the button, open the modal 
+    tls_btn.onclick = function() {
+        tls_modal.style.display = &quot;block&quot;;
+    }
+    
+    // When the user clicks on &lt;span&gt; (x), close the modal
+    tls_modal_close.onclick = function() {
+        tls_modal.style.display = &quot;none&quot;;
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == tls_modal) {
+        tls_modal.style.display = &quot;none&quot;;
+      }
+    }
+&lt;/script&gt;
+&lt;% } %&gt;
+
+&lt;% if (locals.xss) { %&gt;
+  &lt;script&gt;
+      //////////////////////// XSS Modal //////////////////////////////
+      var xss_modal = document.getElementById(&quot;xss_modal&quot;);
+      
+      // Get the button that opens the modal
+      var xss_btn = document.getElementById(&quot;xss_details&quot;);
+      
+      // Get the &lt;span&gt; element that closes the modal
+      var xss_modal_close = document.getElementById(&quot;xss_modal_close&quot;);
+      
+      // When the user clicks the button, open the modal 
+      xss_btn.onclick = function() {
+          xss_modal.style.display = &quot;block&quot;;
+      }
+      
+      // When the user clicks on &lt;span&gt; (x), close the modal
+      xss_modal_close.onclick = function() {
+          xss_modal.style.display = &quot;none&quot;;
+      }
+      
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+        if (event.target == xss_modal) {
+          xss_modal.style.display = &quot;none&quot;;
+        }
+      }
+  &lt;/script&gt;
+  &lt;% } %&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+
+</code></pre>
+<h3 id="22-homepagehtml"><a class="header" href="#22-homepagehtml">2.2 homepage.html</a></h3>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=RocknRoll+One&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot;&gt;
+&lt;style&gt;
+* {
+  box-sizing: border-box;
+  font-family: 'RocknRoll One', sans-serif;
+}
+
+.heading {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 0;
+    /* margin: 0; */
+    text-shadow: 4px 4px #645f5f;
+}
+
+.subheading {
+    text-align: center;
+    margin-top: -20pt;
+    -webkit-text-stroke: 0.05px #454545;
+    /* text-shadow: 2px 1px #000; */
+    /* text-shadow: -1px 1px 0 #000,
+                          1px 1px 0 #000,
+                         1px -1px 0 #000,
+                        -1px -1px 0 #000; */
+}
+.text-yellow {
+    color: #E3AE57;
+}
+
+.text-light {
+	color: #fdd0ad;
+}
+.text-red {
+    color: #E9724C;
+}
+.text-dark {
+    color: #000000;
+}
+
+.column {
+  /* float: center; */
+  /* width: 90%; */
+  margin: 0 50px 20px 50px;
+  padding: 20px;
+  /* position: relative; */
+  background-color: #fdd0ad;
+  border-radius: 5px;
+
+}
+#input-container {
+
+  display: flex;
+  flex-direction: row; /* Changed to row to align input and button horizontally */
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+#key {
+  width: 400px; /* Increased width of input box */
+  padding: 8px 12px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-right: 10px; /* Added margin to create space between input and button */
+  font-size: 16px;
+  text-align: center;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Added box shadow */
+}
+
+input[type=&quot;submit&quot;] {
+  background-color: black;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Added box shadow */
+}
+
+
+input[type=&quot;submit&quot;]:hover {
+  background-color: #333; /* Darker shade of black on hover */
+}
+
+
+&lt;/style&gt;
+&lt;title&gt;WAVD&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class=&quot;heading&quot; style=&quot;margin-top:-40px&quot;&gt; 
+    &lt;h1&gt;&lt;span class=&quot;text-dark&quot;&gt;W&lt;/span&gt;
+        &lt;span class=&quot;text-dark&quot;&gt;A&lt;/span&gt;
+        &lt;span class=&quot;text-dark&quot;&gt;V&lt;/span&gt;
+        &lt;span class=&quot;text-dark&quot;&gt;D&lt;/span&gt;&lt;/h1&gt;
+&lt;/div&gt;
+&lt;div class=&quot;subheading&quot;&gt;
+    &lt;h2&gt;&lt;span class=&quot;text-dark&quot;&gt;Potential Phishing Attempt&lt;/span&gt;&amp;emsp; &amp;ensp;
+        &lt;span class=&quot;text-dark&quot;&gt;SSL/TLS Certificate Validation&lt;/span&gt;&amp;emsp; &amp;ensp;
+        &lt;span class=&quot;text-dark&quot;&gt;Open Redirects&lt;/span&gt;&amp;emsp; &amp;ensp;
+        &lt;span class=&quot;text-dark&quot;&gt;Cross-Site Scripting&lt;/span&gt;
+    &lt;/h2&gt;
+&lt;/div&gt;
+&lt;div id=&quot;input-container&quot;&gt;
+    &lt;input type=&quot;text&quot; name=&quot;key&quot; id=&quot;key&quot;&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Go&quot; onclick=&quot;changeLocation(); return false;&quot;&gt;
+&lt;/div&gt;
+&lt;div style=&quot;align-items: center; width: 100%; justify-content: center;&quot;&gt;
+    &lt;div class=&quot;column&quot;&gt;
+        &lt;h3 style=&quot;margin-top: 0&quot;&gt;About:&lt;/h3&gt;
+        &lt;p style=&quot;font-size: 11pt&quot;&gt;
+            &lt;b&gt;WAVD (Web App Vulnerability Detector)&lt;/b&gt; is a tool to scan &amp; test URLs for certain vulnerabilities &amp; 
+            security issues by simply inspecting the corresponding client-side website. The overall system includes a 
+            virtual server with modules for detecting the different vulnerabilities, along with a proxy server, to direct 
+            requests from a user's browser to the WAVD virtual server to scan the URL for potential threats &amp; return a 
+            dashboard containing the scan results.
+            &lt;br&gt;&lt;br&gt;
+            WAVD scans &amp; detects the following security issues in a website: Absence of Valid SSL/TLS Certificates, 
+            Cross-Site Scripting (XSS), Potential Phishing Attempts &amp; Open Redirection&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;!-- &lt;div class=&quot;column&quot; &gt;
+        &lt;h3 style=&quot;margin-top: 0&quot;&gt;Instructions for Use:&lt;/h3&gt;
+        &lt;p style=&quot;font-size: 11pt&quot;&gt;
+            To perform a scan for any URL, just append '&lt;b&gt;/&amp;lt;URL&amp;gt;&lt;/b&gt;' to the proxy address in the address bar. 
+            &lt;br&gt;
+            &lt;i&gt;(For example, if you wish to perform a scan for 'https://google.co.in', you can append '/https://google.co.in' 
+            to the address bar)&lt;/i&gt;
+            
+            &lt;br/&gt;&lt;br/&gt;
+
+            WAVD will perform the scan within 10-20 s &amp; return a dashboard containing the details of the potential vulnerabilities in the website.
+        &lt;/p&gt;
+    &lt;/div&gt; --&gt;
+&lt;/div&gt;
+
+&lt;footer style=&quot;width:100%; background-color: #030100; text-align: center; color: #fff; padding: 15px; font-size: 11pt; position: fixed; left: 0; bottom: 0;&quot;&gt; 
+   Created by Rohan Sharma, Shubham Yadav, Dhiraj Mishra
+&lt;/footer&gt;
+
+&lt;script&gt;
+    function changeLocation() {
+    var textboxpw = document.getElementById(&quot;key&quot;);
+    window.open('http://localhost:8000/' + textboxpw.value, '_blank');
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+
+</code></pre>
+<h3 id="23-pagehtml"><a class="header" href="#23-pagehtml">2.3 page.html</a></h3>
+<pre><code class="language-html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=RocknRoll+One&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+* {
+  box-sizing: border-box;
+  font-family: 'RocknRoll One', sans-serif;
+}
+
+.column-img {
+  float: left;
+  width: 25%;
+  border: 30px;
+  height: 300px;
+  position: relative;
+  /* left: 10px; */
+  align-items: center;
+  text-align: center;
+  display: block;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  width: 80%;
+  height: 80%;
+}
+.column {
+  float: left;
+  width: 75%;
+  padding: 20px;
+  border: 30px;
+  height: 300px;
+  position: relative;
+}
+
+.row{
+    margin: 10px;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: &quot;&quot;;
+  display: table;
+  clear: both;
+}
+.bg-yellow {
+    background: #E3AE57;
+}
+
+.bg-skin {
+	background: #fdd5b7;
+}
+.bg-red {
+    background: #E9724C;
+}
+.text-white {
+	color: #FFF;
+}
+.text-dark {
+    color: #000000;
+}
+h2 {
+    text-align: center;
+}
+.heading {
+    text-align: center;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #E3AE57;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color:  #E9724C;
+  color: white;
+}
+
+button {
+    display: inline-block;
+    /* width: ; */
+    transition: all 0.5s;
+    cursor: pointer;
+    /* margin: 5px; */
+}
+#proceed {
+    background-color:#000;
+    border-radius: 10px;
+    border: 3px double #000;
+    color: #f1e2d7;
+    text-align: center;
+    /* font-size: inherit; */
+    /* padding: 10px; */
+    padding-left: 20px;
+    padding-right: 20px;
+
+}
+#phish_param {
+    background-color:#E3AE57;
+    /* border-radius: 10px; */
+    border: 0px double #cccccc;
+    /* color: #eeeeee; */
+    text-align: left;
+    font-size: inherit;
+}
+button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+/* button:hover {
+background-color: #f7c2f9;
+} */
+button:hover span {
+    padding-right: 25px;
+}
+#proceed:hover span {
+    padding-left: 25px;
+}
+button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+td, th {
+  border: 3px solid #f1e2d7;
+  text-align: center;
+  padding: 8px;
+}
+
+#footer {
+    position: absolute;
+    /* display: inline; */
+    padding: 10px 10px 0px 10px;
+    bottom: 20px;
+    width: 70%;
+    /* Height of the footer*/ 
+    height: 40px;
+    /* background: grey; */
+}
+p {
+    padding: 10px 10px 0px 10px;
+}
+&lt;/style&gt;
+&lt;title&gt;Scan Results&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class=&quot;heading&quot;&gt; 
+    &lt;h1&gt;Scan Results&lt;/h1&gt;
+&lt;/div&gt;
+
+
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;column-img&quot;&gt;
+    &lt;img src=&quot;../templates/img/phishing.jpeg&quot; class=&quot;center&quot;&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;column bg-yellow text-white&quot; style=&quot;&quot;&gt;
+    &lt;h2&gt;Potential Phishing Attempts&lt;/h2&gt;
+    &lt;p&gt;Some text..&lt;/p&gt;
+    
+    &lt;!-- Trigger/Open The Modal --&gt;
+    &lt;button id=&quot;phish_param&quot;&gt;&lt;span class=&quot;text-white&quot;&gt;Click here for detailed analysis&lt;/span&gt;&lt;/button&gt; 
+    &lt;div id=&quot;footer&quot;&gt;
+      Quick Links
+      &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;https://www.imperva.com/learn/application-security/phishing-attack-scam&quot;&gt;A Gentle Introduction to Phishing Attacks&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;https://www.globalsign.com/en/blog/how-to-spot-a-fake-website&quot;&gt;How to Spot a Phishing Website&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;     
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;column bg-red text-white&quot; style=&quot;&quot;&gt;
+    &lt;h2&gt;SSL/TLS Certificate Validation&lt;/h2&gt;
+    &lt;p&gt;Some text..&lt;/p&gt;
+    &lt;div id=&quot;footer&quot;&gt;Quick Links&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;column-img&quot;&gt;
+    &lt;img src=&quot;../templates/img/tls.png&quot;  class=&quot;center&quot;&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;column-img&quot;&gt;
+    &lt;img src=&quot;../templates/img/or.jpeg&quot; class=&quot;center&quot;&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;column text-white&quot; style=&quot;background-color:#000;&quot;&gt;
+    &lt;h2&gt;Open Redirects&lt;/h2&gt;
+    &lt;p&gt;Some text..&lt;/p&gt;
+    &lt;div id=&quot;footer&quot;&gt;Quick Links&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;column bg-skin&quot; style=&quot;&quot;&gt;
+    &lt;h2&gt;Cross-Site Scripting (XSS)&lt;/h2&gt;
+    &lt;p&gt;Some text..&lt;/p&gt;
+    &lt;div id=&quot;footer&quot;&gt;Quick Links&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;column-img&quot;&gt;
+    &lt;img src=&quot;../templates/img/xss.jpeg&quot; class=&quot;center&quot;&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id=&quot;myModal&quot; class=&quot;modal&quot;&gt;
+
+    &lt;!-- Modal content --&gt;
+    &lt;div class=&quot;modal-content text-dark&quot;&gt;
+      &lt;div class=&quot;modal-header&quot;&gt;
+        &lt;span class=&quot;close&quot;&gt;&amp;times;&lt;/span&gt;
+        &lt;h2&gt;Phishing Detection Parameters&lt;/h2&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;modal-body&quot;&gt;
+        &lt;!-- &lt;p&gt;Some text in the Modal Body&lt;/p&gt; --&gt;
+        &lt;table&gt;
+            &lt;tr&gt;
+              &lt;th&gt;Paramter&lt;/th&gt;
+              &lt;th&gt;Description&lt;/th&gt;
+              &lt;th&gt;Status&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Parameter1&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;modal-footer&quot;&gt;
+        &lt;!-- &lt;h3&gt;M&lt;/h3&gt; --&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  
+&lt;/div&gt;
+
+&lt;div class=&quot;heading&quot;&gt; 
+    &lt;button id=&quot;proceed&quot;&gt;&lt;span&gt;&lt;h2&gt;Proceed to url&lt;/h2&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+    // Get the modal
+    var modal = document.getElementById(&quot;myModal&quot;);
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById(&quot;phish_param&quot;);
+    
+    // Get the &lt;span&gt; element that closes the modal
+    var span = document.getElementsByClassName(&quot;close&quot;)[0];
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+      modal.style.display = &quot;block&quot;;
+    }
+    
+    // When the user clicks on &lt;span&gt; (x), close the modal
+    span.onclick = function() {
+      modal.style.display = &quot;none&quot;;
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = &quot;none&quot;;
+      }
+    }
+    &lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="server-code.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="server-code.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,1269 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Server - WAVD-CODE</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="server-code.html" class="active"><strong aria-hidden="true">1.</strong> Server</a></li><li class="chapter-item expanded "><a href="proxy-code.html"><strong aria-hidden="true">2.</strong> Proxy</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">WAVD-CODE</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="server-code"><a class="header" href="#server-code">Server-code</a></h1>
+<h2 id="mainpy"><a class="header" href="#mainpy">main.py</a></h2>
+<pre><code class="language-python">
+import uvicorn
+from fastapi import FastAPI
+from fastapi.openapi.utils import get_openapi
+from starlette.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+import v1
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware, allow_origins=[&quot;http://localhost:8000&quot;], allow_methods=[&quot;*&quot;], allow_headers=[&quot;*&quot;]
+)
+
+@app.get(&quot;/&quot;, tags=[&quot;root&quot;])
+def get_root():
+    return RedirectResponse(&quot;/v1/&quot;)
+
+
+app.include_router(
+    v1.router,
+    prefix=&quot;/v1&quot;,
+    tags=[&quot;vulnerability scanning (version 1)&quot;],
+    responses={404: {&quot;description&quot;: &quot;Not found&quot;}},
+)
+
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title=&quot;WAVS: Web App Vulnerability Scanner&quot;,
+        version=&quot;0.0.1&quot;,
+        description=&quot;&quot;&quot;WAVS (Web App Vulnerability Scanner) is a tool to scan &amp; test URLs for certain vulnerabilities &amp; 
+        security issues by simply inspecting the corresponding client-side website. The overall system would include a 
+        virtual server with modules for detecting the different vulnerabilities, along with a proxy server, to direct 
+        requests from a browser to the virtual server first while visiting a website. The proxy could warn the user before 
+        redirecting to the website if some vulnerabilities are found during the scan done by our virtual server.
+        \nWe identify &amp; assess the following security issues that a website may suffer from: _Absence of Valid TLS Certificates_, 
+        _Cross-Site Scripting (XSS)_, _Potential Phishing Attempts_ &amp; _Open Redirection_
+        &quot;&quot;&quot;,
+        routes=app.routes,
+    )
+    openapi_schema[&quot;info&quot;][&quot;x-logo&quot;] = {
+        &quot;url&quot;: &quot;https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png&quot;
+    }
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
+
+if __name__ == &quot;__main__&quot;:
+    uvicorn.run(&quot;main:app&quot;, host=&quot;localhost&quot;, port=9000)import uvicorn
+from fastapi import FastAPI
+from fastapi.openapi.utils import get_openapi
+from starlette.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+import v1
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware, allow_origins=[&quot;http://localhost:8000&quot;], allow_methods=[&quot;*&quot;], allow_headers=[&quot;*&quot;]
+)
+
+@app.get(&quot;/&quot;, tags=[&quot;root&quot;])
+def get_root():
+    return RedirectResponse(&quot;/v1/&quot;)
+
+
+app.include_router(
+    v1.router,
+    prefix=&quot;/v1&quot;,
+    tags=[&quot;vulnerability scanning (version 1)&quot;],
+    responses={404: {&quot;description&quot;: &quot;Not found&quot;}},
+)
+
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title=&quot;WAVS: Web App Vulnerability Scanner&quot;,
+        version=&quot;0.0.1&quot;,
+        description=&quot;&quot;&quot;WAVS (Web App Vulnerability Scanner) is a tool to scan &amp; test URLs for certain vulnerabilities &amp; 
+        security issues by simply inspecting the corresponding client-side website. The overall system would include a 
+        virtual server with modules for detecting the different vulnerabilities, along with a proxy server, to direct 
+        requests from a browser to the virtual server first while visiting a website. The proxy could warn the user before 
+        redirecting to the website if some vulnerabilities are found during the scan done by our virtual server.
+        \nWe identify &amp; assess the following security issues that a website may suffer from: _Absence of Valid TLS Certificates_, 
+        _Cross-Site Scripting (XSS)_, _Potential Phishing Attempts_ &amp; _Open Redirection_
+        &quot;&quot;&quot;,
+        routes=app.routes,
+    )
+    openapi_schema[&quot;info&quot;][&quot;x-logo&quot;] = {
+        &quot;url&quot;: &quot;https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png&quot;
+    }
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
+
+if __name__ == &quot;__main__&quot;:
+    uvicorn.run(&quot;main:app&quot;, host=&quot;localhost&quot;, port=9000)
+
+</code></pre>
+<h3 id="1-open-redirection-detection"><a class="header" href="#1-open-redirection-detection">1. Open Redirection Detection</a></h3>
+<h3 id="11-detectorpy"><a class="header" href="#11-detectorpy">1.1 detector.py</a></h3>
+<pre><code class="language-python">import warnings,ssl,requests
+import urllib.parse as urlparse
+warnings.filterwarnings('ignore')
+ssl._create_default_https_context = ssl._create_unverified_context
+#----------------------------------------------------------------------------------#
+
+class OpenRedirectsDetector:
+    def __init__(self):
+        self.url = None
+    
+    def detect_or(self, url):
+        if urlparse.urlparse(url).scheme == '':
+            url = 'http://' + url
+        self.url = url
+        result = self.check()
+        return result
+
+    def check(self):
+        values = ['url', 'rurl', 'u','next', 'link', 'lnk', 'go', 'target', 'dest', 'destination', 'redir', 
+        'redirect_uri', 'redirect_url', 'redirect', 'view', 'loginto', 'image_url', 'return', 'returnTo', 'return_to',
+        'continue', 'return_path', 'path']
+        RedirectCodes = [i for i in range(300,311,1)]
+        
+        request = requests.Session()
+        parsed = urlparse.urlparse(self.url)
+        params = urlparse.parse_qsl(parsed.query)
+        if(params):
+            try:
+                page = request.get(self.url, allow_redirects=False, timeout=10, verify=False, params='')
+                page2 = request.get(self.url, allow_redirects=True, timeout=10, verify=False, params='')
+                # print(page2.request.url)
+                if page.status_code in RedirectCodes:
+                    details = {}
+                    for x,y in params:
+                        if(x in values and y==page2.request.url):
+                            details = {&quot;parameter&quot;: x, &quot;redirect_url&quot;: y }
+                            break
+                    if(details):
+                        return {&quot;result&quot;: &quot;Header Based Redirection&quot;, &quot;details&quot;: details}
+                    elif('/r/' in self.url):
+                        details = {&quot;parameter&quot;: 'r'}
+                        return {&quot;result&quot;: &quot;Header Based Redirection&quot;, &quot;details&quot;: details}
+                    else:
+                        return {&quot;result&quot;: &quot;Open Redirection&quot;, &quot;details&quot;: {}}
+                elif page.status_code==404:
+                    return {&quot;result&quot;: &quot;404 Not Found&quot;, &quot;details&quot;: {}}
+                elif page.status_code==403:
+                    return {&quot;result&quot;: &quot;403 Forbidden&quot;, &quot;details&quot;: {}}
+                elif page.status_code==400:
+                    return {&quot;result&quot;: &quot;400 Bad Request&quot;, &quot;details&quot;: {}}
+            except requests.exceptions.Timeout:
+                return {&quot;result&quot;: &quot;TimeOut&quot;, &quot;details&quot;: {&quot;url&quot;: self.url}}
+            except requests.exceptions.ConnectionError:
+                return {&quot;result&quot;: &quot;Connection Error&quot;, &quot;details&quot;: {&quot;url&quot;: self.url}}
+
+        payload = &quot;https://www.google.co.in&quot;
+        query = [&quot;url&quot;, &quot;redirect_url&quot;]
+        for x in query:
+            url = self.url+&quot;?&quot;+x+&quot;=&quot;+payload            
+            try:
+                page = request.get(url, allow_redirects=False, timeout=10, verify=False, params='')
+                page2 = request.get(url, allow_redirects=True, timeout=10, verify=False, params='')
+                if(page.status_code in RedirectCodes and page2.request.url == payload):
+                    return {&quot;result&quot;: &quot;Header Based Redirection&quot;, &quot;details&quot;: {&quot;parameter&quot;: x}}
+                elif page.status_code==404:
+                    return {&quot;result&quot;: &quot;404 Not Found&quot;, &quot;details&quot;: {}}
+                elif page.status_code==403:
+                    return {&quot;result&quot;: &quot;403 Forbidden&quot;, &quot;details&quot;: {}}
+                elif page.status_code==400:
+                    return {&quot;result&quot;: &quot;400 Bad Request&quot;, &quot;details&quot;: {}}
+            except requests.exceptions.Timeout:
+                return {&quot;result&quot;: &quot;TimeOut&quot;, &quot;details&quot;: {&quot;url&quot;: self.url}}
+            except requests.exceptions.ConnectionError:
+                return {&quot;result&quot;: &quot;Connection Error&quot;, &quot;details&quot;: {&quot;url&quot;: self.url}}
+        return {&quot;result&quot;: &quot;Not Vulnerable&quot;, &quot;details&quot;: {}}
+
+
+def main():
+    o = OpenRedirectsDetector()
+    # print(o.detect_or(&quot;https://bugslayers-cs416-open-redirect.herokuapp.com/?url=https://www.google.com&quot;))
+    # print(o.detect_or(&quot;https://medium.com/r/?url=https://phising-malicious.com&quot;))
+    # print(o.detect_or(&quot;google.co.in&quot;))
+
+if __name__ == &quot;__main__&quot;:
+    main()
+
+
+</code></pre>
+<h3 id="2-phishing-detection"><a class="header" href="#2-phishing-detection">2. Phishing Detection</a></h3>
+<h3 id="21-detectorpy"><a class="header" href="#21-detectorpy">2.1 detector.py</a></h3>
+<pre><code class="language-python">import pickle
+import os
+from .extractor import WebsiteFeatureExtractor
+
+class PhishingWebsiteDetector:
+    def __init__(self, rel_model_path=&quot;./phishing_detection_model/phishing_website_detection_model.sav&quot;):
+        self.model = pickle.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), rel_model_path), &quot;rb&quot;))
+        self.wfe = None
+
+        self.interpretation = {
+            -1: &quot;Phishing&quot;,
+            1: &quot;Legitimate&quot;,
+            0: &quot;Suspicious&quot;
+        }
+
+    def detect_phishing(self, url):
+        self.wfe = WebsiteFeatureExtractor(url)
+        
+        precheck_res = self.__prechecks()
+        
+        if precheck_res[&quot;passed&quot;]:
+            feature_vec = self.wfe.extract_features()
+            res = self.interpretation[self.model.predict([feature_vec])[0]]
+            response = {
+                &quot;result&quot;: res
+            }
+            
+
+            details = {
+                &quot;prechecks&quot;: &quot;passed&quot;,
+                &quot;features&quot;: []
+            }
+            for feature, desc, val in zip(self.wfe.feature_names, self.wfe.feature_desc, feature_vec):
+                details[&quot;features&quot;].append({
+                    &quot;feature&quot;: feature,
+                    &quot;desc&quot;: desc,
+                    &quot;value&quot;: self.interpretation[val]
+                })
+            response[&quot;details&quot;] = details
+            
+            return response
+        else:
+            return {&quot;result&quot;: &quot;Phishing&quot;, &quot;details&quot;: {&quot;prechecks&quot;: &quot;failed&quot;, &quot;failed_prechecks&quot;: precheck_res[&quot;details&quot;][&quot;failed_prechecks&quot;]}}
+
+    def __prechecks(self):
+        res = {
+            &quot;passed&quot;: True,
+            &quot;details&quot;: {
+                &quot;failed_prechecks&quot;: []
+            }
+        }
+        if self.wfe.soup == -999:
+            res[&quot;passed&quot;] = False
+            res[&quot;details&quot;][&quot;failed_prechecks&quot;].append(&quot;Unable to fetch website&quot;)
+        else:
+            if len(self.wfe.soup.find_all([&quot;html&quot;])) == 0:
+                res[&quot;passed&quot;] = False
+                res[&quot;details&quot;][&quot;failed_prechecks&quot;].append(&quot;No HTML Tag&quot;)
+        
+        return res
+   
+
+
+</code></pre>
+<h3 id="22-extractorpy"><a class="header" href="#22-extractorpy">2.2 extractor.py</a></h3>
+<pre><code class="language-python">import re
+import os
+import ssl, socket
+import numpy as np
+import datetime
+import requests
+import tldextract
+import whois
+import ipaddress
+from googlesearch import search
+from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+
+import time
+
+###########################################################################
+############################ Feature Extractor ############################
+###########################################################################
+
+# Features to be extracted &amp; stored in the following order:
+
+# Index  Feature
+# -----  -------------------------
+# 0 	 SSLfinal_State
+# 1 	 URL_of_Anchor
+# 2 	 Links_in_tags
+# 3 	 web_traffic
+# 4 	 Prefix_Suffix
+# 5 	 having_Sub_Domain
+# 6 	 SFH
+# 7 	 Request_URL
+# 8 	 Links_pointing_to_page
+# 9 	 Google_Index
+# 10 	 URL_Length
+# 11 	 DNSRecord
+# 12 	 Domain_registeration_length
+# 13 	 having_IP_Address
+# 14 	 HTTPS_token
+# 15 	 Page_Rank
+# 16 	 age_of_domain
+# 17 	 popUpWidnow
+# 18 	 Iframe
+# 19 	 on_mouseover
+# --------------------------------
+
+class WebsiteFeatureExtractor:
+    def __init__(self, url):
+        
+        load_dotenv()
+        
+        # Converts the given URL into standard format
+        self.url = url
+        if not re.match(r&quot;^https?&quot;, url):
+            self.url = &quot;https://&quot; + url
+
+        self.soup = self.getParsedResponse()
+        self.subdomain, self.domain, self.suffix = self.parseDomain()
+        self.whois_response = whois.whois(self.domain + &quot;.&quot; + self.suffix)
+
+        self.feature_names = [
+            &quot;SSLfinal_State&quot;,
+            &quot;URL_of_Anchor&quot;,
+            &quot;Links_in_tags&quot;,
+            &quot;web_traffic&quot;,
+            &quot;Prefix_Suffix&quot;,
+            &quot;having_Sub_Domain&quot;,
+            &quot;SFH&quot;,
+            &quot;Request_URL&quot;,
+            &quot;Links_pointing_to_page&quot;,
+            &quot;Google_Index&quot;,
+            &quot;URL_Length&quot;,
+            &quot;DNSRecord&quot;,
+            &quot;Domain_registeration_length&quot;,
+            &quot;having_IP_Address&quot;,
+            &quot;HTTPS_token&quot;,
+            &quot;Page_Rank&quot;,
+            &quot;age_of_domain&quot;,
+            &quot;popUpWidnow&quot;,
+            &quot;Iframe&quot;,
+            &quot;on_mouseover&quot;
+        ]
+        self.feature_desc = [
+            &quot;Checks the age &amp; issuer of SSL Certificate for website&quot;,
+            &quot;% of URLs in pointing to different domains or not to any webpage&quot;,
+            &quot;% of links in &lt;script&gt;, &lt;link&gt; &amp; &lt;meta&gt; tags with different domains&quot;,
+            &quot;Popularity of a website using ranks from the Alexa database&quot;,
+            &quot;Prefixes or suffixes separated by (-) to the domain name&quot;,
+            &quot;Existence of multiple subdomains in the URL&quot;,
+            &quot;Check if the Server Form Handler has about:blank&quot;,
+            &quot;% of external objects within a webpage loaded from different domain&quot;,
+            &quot;Number of backlinks pointing to the page&quot;,
+            &quot;Check if the page is in Google's index or not&quot;,
+            &quot;Length of the URL (longish URLs are considered phishy)&quot;,
+            &quot;Existence of a DNS record for the webpage in the WHOIS database&quot;,
+            &quot;Registration period of domain &amp; time until expiration&quot;,
+            &quot;Presence of an IP address (decimal/hex) in the domain part of URL&quot;,
+            &quot;Existence of HTTPS Token in the Domain Part of the URL&quot;,
+            &quot;Google's PageRank value for a webpage&quot;,
+            &quot;Time since creation of domain name of the website&quot;,
+            &quot;Existence of popups such as prompt() or alert() in the webpage&quot;,
+            &quot;Presence of &lt;iframe&gt; in a webpage to display additional webpages&quot;,
+            &quot;Use of onmouseover() event to change address bar contents&quot;
+        ]
+        self.features = np.zeros(20, dtype=int)
+
+    def extract_features(self):
+        # Extract all features &amp; return the feature vector
+        # s = time.time()
+        self.features[0] = self.checkSSLfinalState()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[1] = self.checkUrlOfAnchor()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[2] = self.checkLinksInTags()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[3] = self.checkWebTraffic()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[4] = self.checkPrefixSuffix()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[5] = self.checkHavingSubdomain()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[6] = self.checkSFH()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[7] = self.checkRequestUrl()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[8] = self.checkLinksPointingToPage()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[9] = self.checkGoogleIndex()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[10] = self.checkUrlLength()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[11] = self.checkDNSRecord()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[12] = self.checkDomainRegistrationLength()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[13] = self.checkHavingIPAddress()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[14] = self.checkHTTPSToken()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[15] = self.checkPageRank()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[16] = self.checkAgeOfDomain()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[17] = self.checkPopUpWindow()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[18] = self.checkIframe()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+        # s=time.time()
+        self.features[19] = self.checkOnMouseOver()
+        # print(&quot;%.4f s&quot; % (time.time() - s))
+
+        return self.features
+        
+
+    ###################################################################
+    ########################## Utility Functions ######################
+    ###################################################################
+    
+    def getFeatureNames(self):
+        return self.feature_names
+
+    def getParsedResponse(self, url=None):
+        url = url or self.url
+
+        # Stores the response of the given URL
+        try:
+            response = requests.get(url, timeout=5)
+            soup = BeautifulSoup(response.text, 'html.parser')
+        except Exception:
+            response = &quot;&quot;
+            soup = -999
+
+        return soup
+
+    def parseDomain(self, url=None):
+        url = url or self.url
+
+        # Extracts domain from the given URL
+        subdomain, domain, suffix = tldextract.extract(url)
+        return subdomain, domain, suffix
+
+    def getWhoisResponse(self, url=None):
+        if url:
+            _, domain, suffix = tldextract.extract(url)
+            domain_name = domain + &quot;.&quot; + suffix
+            return whois.whois(domain_name)
+        else:
+            return self.whois_response
+
+    def getDomainAndParsedResponse(self, url=None):
+        if url == None:
+            domain = self.domain
+            soup = self.soup
+        else:
+            domain = self.parseDomain(url)[1]
+            soup = self.getParsedResponse(url)
+        return domain, soup
+
+    def parseDatetimeString(self, datetime_str):
+        return datetime.datetime.strptime(datetime_str, &quot;%b %d %H:%M:%S %Y %Z&quot;)
+
+    ###################################################################
+    #################### Feature Extraction Functions #################
+    ###################################################################
+
+    # 0. SSLfinal_State
+    def checkSSLfinalState(self, url=None):
+        hostname = &quot;.&quot;.join(self.parseDomain(url)[1:])
+        reputed_issuers = [&quot;IdenTrust&quot;, &quot;DigiCert Inc&quot;, &quot;Sectigo Limited&quot;, &quot;GoDaddy.com, Inc.&quot;, &quot;GlobalSign nv-sa&quot;, &quot;Actalis S.p.A.&quot;, &quot;Entrust, Inc.&quot;, &quot;Google Trust Services&quot;, &quot;Microsoft Corporation&quot;, &quot;Amazon&quot;]
+        try:
+            ctx = ssl.create_default_context()
+            with ctx.wrap_socket(socket.socket(), server_hostname=hostname) as s:
+                s.settimeout(5)
+                s.connect((hostname, 443))
+                cert = s.getpeercert()
+            issuer = dict(x[0] for x in cert['issuer'])[&quot;organizationName&quot;]
+            issued_on = self.parseDatetimeString(cert[&quot;notBefore&quot;])
+            expires_on = self.parseDatetimeString(cert[&quot;notAfter&quot;])
+            cert_valid = (expires_on - datetime.datetime.today()).days &gt; 0 and (datetime.datetime.today() - issued_on).days &gt; 0
+            
+            if cert_valid:
+                if issuer in reputed_issuers:
+                    return 1
+                else:
+                    return 0
+            else:
+                return -1
+        except Exception:
+            return -1
+
+
+    # 1. URL_of_Anchor
+    def checkUrlOfAnchor(self, url=None):
+        domain, soup = self.getDomainAndParsedResponse(url)
+        i = 0
+        unsafe=0
+        if soup == -999:
+            return -1
+        else:
+            for a in soup.find_all('a', href=True):
+                if (not domain in a['href']) or a['href'].startswith(&quot;#&quot;) or &quot;javascript&quot; in a['href'].lower():
+                    unsafe += 1
+                i += 1
+            try:
+                percentage = unsafe / float(i) * 100
+            except Exception:
+                # No &lt;a&gt; tags with href found
+                return 1
+
+            if percentage &lt; 31.0:
+                return 1
+            elif percentage &lt;= 67.0:
+                return 0
+            else:
+                return -1
+
+    # 2. Links_in_tags
+    def checkLinksInTags(self, url=None):
+        domain, soup = self.getDomainAndParsedResponse(url)
+        i=0
+        success = 0
+        if soup == -999:
+            return -1
+        else:
+            for link in soup.find_all('link', href= True):
+                if domain not in link['href']:
+                    success = success + 1
+                i = i+1
+
+            for script in soup.find_all('script', src= True):
+                if domain not in script['src']:
+                    success = success + 1
+                i = i+1
+            try:
+                percentage = success / float(i) * 100
+            except Exception:
+                return 1
+
+            if percentage &lt; 17.0 :
+                return 1
+            elif percentage &lt;= 81.0:
+                return 0
+            else :
+                return -1
+
+    # 3. web_traffic
+    def checkWebTraffic(self, url=None):
+        url = url or self.url
+        try:
+            r = requests.get('http://tools.mercenie.com/alexa-rank-checker/api/?format=json&amp;urls=' + url, timeout=2)
+            data = r.json()
+            rank = int(data['alexaranks']['first']['alexarank']['0'])
+
+            if rank &lt; 100000:
+                return 1
+            else:
+                return 0
+        except Exception:
+            return -1
+
+    # 4. Prefix_Suffix
+    def checkPrefixSuffix(self, url=None):
+        domain = self.getDomainAndParsedResponse(url)[0]
+        if &quot;-&quot; in domain:
+            return -1
+        else:
+            return 1
+
+    # 5. having_Sub_Domain
+    def checkHavingSubdomain(self, url=None):
+        if url == None:
+            subdomains = self.subdomain.split(&quot;.&quot;)
+        else:
+            subdomains = tldextract(url)[0].split(&quot;.&quot;)
+
+        if &quot;www&quot; in subdomains:
+            subdomains.remove(&quot;www&quot;)
+        if len(subdomains) == 0:
+            return 1
+        elif len(subdomains) == 1:
+            if subdomains[0] == &quot;&quot;:
+                return 1
+            else:
+                return 0
+        else:
+            return -1
+
+    # 6. SFH
+    def checkSFH(self, url=None):
+        domain, soup = self.getDomainAndParsedResponse(url)
+        sfh_empty = 0
+        sfh_other_domain = 0
+        for form in soup.find_all('form', action= True):
+            if form['action'] ==&quot;&quot; or form['action'] == &quot;about:blank&quot; :
+                sfh_empty += 1
+            elif domain not in form['action']:
+                sfh_other_domain += 1
+        
+        if sfh_empty &gt; 0:
+            return -1
+        elif sfh_other_domain &gt; 0:
+            return 0
+        else:
+            return 1
+
+    # 7. Request_URL
+    def checkRequestUrl(self, url=None):
+        domain, soup = self.getDomainAndParsedResponse(url)
+        i = 0
+        success = 0
+        
+        if soup == -999:
+            return -1
+        
+        else:
+            for elem in soup.find_all([&quot;img&quot;, &quot;audio&quot;, &quot;embed&quot;, &quot;iframe&quot;, &quot;video&quot;]):
+                # Check for &lt;source&gt; tags within the media elements
+                for src in elem.find_all(&quot;source&quot;):
+                    if domain in src['src']:
+                        success += 1
+                    i += 1
+                
+                # Check for src attribute of the media elements
+                if elem.has_attr(&quot;src&quot;):
+                    if domain in elem['src']:
+                        success += 1
+                    i += 1
+
+            try:
+                percentage = success/float(i) * 100
+            except Exception:
+                return 1
+
+            if percentage &lt; 22.0 :
+                return 1
+            elif percentage &lt;= 61.0:
+                return 0
+            else :
+                return -1
+
+    # 8. Links_pointing_to_page
+    def checkLinksPointingToPage(self, url=None):
+        url = url or self.url
+        try:
+            data = {&quot;urlo&quot;: url}
+            r = requests.post(&quot;http://tools.mercenie.com/moz-checker/&quot;, data=data, timeout=2)
+            soup = BeautifulSoup(r.text, 'html.parser')
+
+            for row in soup.find_all(&quot;tr&quot;):
+                row_data = row.find_all(&quot;td&quot;)
+                if len(row_data) == 2 and row_data[0].text == &quot;Number of Backlinks&quot;:
+                    num_backlinks = int(row_data[1].text)
+            
+            if num_backlinks == 0:
+                return -1
+            elif num_backlinks &lt;= 2:
+                return 0
+            else:
+                return 1
+
+        except Exception:
+            return -1
+
+    # 9. Google_Index
+    def checkGoogleIndex(self, url=None):
+        url = url or self.url
+        try:
+            results = search(url)
+            if url in results:
+                return 1
+            else: 
+                return -1
+        except Exception:
+            return -1
+
+    # 10. URL_Length
+    def checkUrlLength(self, url=None):
+        url = url or self.url
+        if len(url) &lt; 54:
+            return 1
+        elif len(url) &gt;= 54 and len(url) &lt;= 75:
+            return 0
+        else:
+            return -1
+
+    # 11. DNSRecord
+    def checkDNSRecord(self, url=None):
+        whois_response = self.getWhoisResponse(url)
+        if &quot;domain_name&quot; not in whois_response.keys() or whois_response[&quot;domain_name&quot;] == None:
+            return -1
+        else:
+            return 1
+
+    # 12. Domain_registeration_length
+    def checkDomainRegistrationLength(self, url=None):
+        if self.checkDNSRecord(url) == -1:
+            return -1
+
+        whois_response = self.getWhoisResponse(url)
+        
+        # Obtain the domain creation date
+        if &quot;creation_date&quot; not in whois_response.keys():
+            return -1
+        if type(whois_response[&quot;creation_date&quot;]) == datetime.datetime:
+            creation_date = whois_response[&quot;creation_date&quot;]
+        elif type(whois_response[&quot;creation_date&quot;]) == list:
+            creation_date = whois_response[&quot;creation_date&quot;][0]
+        
+        # Obtain the domain expiration date
+        if &quot;expiration_date&quot; not in whois_response.keys():
+            return -1
+        if type(whois_response[&quot;expiration_date&quot;]) == datetime.datetime:
+            expiration_date = whois_response[&quot;expiration_date&quot;]
+        elif type(whois_response[&quot;expiration_date&quot;]) == list:
+            expiration_date = whois_response[&quot;expiration_date&quot;][0]
+        
+        reg_len = expiration_date - creation_date
+        if reg_len.days &lt;= 365:                     # Less than 1 year
+            return -1
+        else:
+            return 1
+
+    # 13. having_IP_Address
+    def checkHavingIPAddress(self, url=None):
+        domain= self.getDomainAndParsedResponse(url)[0]
+        try:
+            resp = ipaddress.ip_address(domain)
+            return -1
+        except Exception:
+            return 1
+
+    # 14. HTTPS_token
+    def checkHTTPSToken(self, url=None):
+        if url:
+            subdomain, domain, _ = tldextract.extract(url)
+        else:
+            subdomain = self.subdomain
+            domain = self.domain
+
+        if &quot;https&quot; in subdomain or &quot;https&quot; in domain:
+            return -1
+        else:
+            return 1
+
+    # 15. Page_Rank
+    def checkPageRank(self, url=None):
+        if url:
+            _, domain, suffix = self.parseDomain(url)
+            domain_name = domain + &quot;.&quot; + suffix
+        else:
+            domain_name = self.domain + &quot;.&quot; + self.suffix
+        
+        try:
+            page_rank_url = &quot;https://openpagerank.com/api/v1.0/getPageRank?domains[]=&quot; + domain_name
+            headers = {&quot;API-OPR&quot;: os.getenv(&quot;OPR_API_KEY&quot;)}
+            r = requests.get(page_rank_url, headers=headers, timeout=2).json()
+            pr = float(r[&quot;response&quot;][0][&quot;page_rank_decimal&quot;])/10
+        except Exception:
+            return -1
+
+        if pr &lt; 0.2:
+            return -1
+        else:
+            return 1
+
+    # 16. age_of_domain
+    def checkAgeOfDomain(self, url=None):
+        if self.checkDNSRecord(url) == -1:
+            return -1
+
+        whois_response = self.getWhoisResponse(url)
+
+        # Obtain the domain creation date
+        if &quot;creation_date&quot; not in whois_response.keys():
+            return -1
+        if type(whois_response[&quot;creation_date&quot;]) == datetime.datetime:
+            creation_date = whois_response[&quot;creation_date&quot;]
+        elif type(whois_response[&quot;creation_date&quot;]) == list:
+            creation_date = whois_response[&quot;creation_date&quot;][0]
+        
+        # Obtain today's date
+        today = datetime.datetime.today()
+        
+        age = (today - creation_date).days
+        if age &gt;= 182:
+            return 1
+        else:
+            return -1
+
+    # 17. popUpWindow
+    def checkPopUpWindow(self, url=None):
+        soup = self.getDomainAndParsedResponse(url)[1]
+        if len(re.findall(r&quot;(prompt\()|(alert\()&quot;, str(soup))) &gt; 0:
+            return -1
+        else:
+            return 1
+    
+    # 18. Iframe
+    def checkIframe(self, url=None):
+        soup = self.getDomainAndParsedResponse(url)[1]
+        if len(soup.find_all(&quot;iframe&quot;, frameborder=&quot;0&quot;)) &gt; 0:
+            return -1
+        else:
+            return 1
+
+    # 19. on_mouseover
+    def checkOnMouseOver(self, url=None):
+        soup = self.getDomainAndParsedResponse(url)[1]
+        if len(re.findall(r&quot;onmouseover&quot;, str(soup))) &gt; 0:
+            return -1
+        else:
+            return 1
+
+
+
+
+
+</code></pre>
+<h3 id="3-tls-certificate-detection"><a class="header" href="#3-tls-certificate-detection">3. TLS Certificate detection</a></h3>
+<h3 id="31-cert_checkerpy"><a class="header" href="#31-cert_checkerpy">3.1 cert_checker.py</a></h3>
+<pre><code class="language-python">
+import datetime
+import select
+import socket
+import sys
+import OpenSSL
+import json
+
+class Domain(str):
+    def __new__(cls, domain):
+        host = domain
+        port = 443
+        connection_host = host
+        result = str.__new__(cls, host)
+        result.host = host
+        result.connection_host = connection_host
+        result.port = port
+        return result
+
+class CertChecker:
+    def __init__(self):
+        pass
+
+    def get_cert_from_domain(self, domain):
+        ctx = OpenSSL.SSL.Context(OpenSSL.SSL.SSLv23_METHOD)
+        sock = socket.socket()
+        sock.settimeout(5)
+        wrapped_sock = OpenSSL.SSL.Connection(ctx, sock)
+        wrapped_sock.set_tlsext_host_name(domain.host.encode('ascii'))
+        wrapped_sock.connect((domain.connection_host, 443))
+        while True:
+            try:
+                wrapped_sock.do_handshake()
+                break
+            except OpenSSL.SSL.WantReadError:
+                select.select([wrapped_sock], [], [])
+        return wrapped_sock.get_peer_cert_chain()
+
+    def get_domain_certs(self, domains):
+        domain = Domain(domains)
+        try:
+            data = self.get_cert_from_domain(domain)
+        except Exception as e:
+            data = e
+        return data
+
+    def validate_cert(self, cert_chain):
+        msgs = []
+        ctx = OpenSSL.SSL.Context(OpenSSL.SSL.SSLv23_METHOD)
+        ctx.set_default_verify_paths()
+        cert_store = ctx.get_cert_store()
+        for index, cert in reversed(list(enumerate(cert_chain))):
+            sc = OpenSSL.crypto.X509StoreContext(cert_store, cert)
+            try:
+                sc.verify_certificate()
+            except OpenSSL.crypto.X509StoreContextError as e:
+                msgs.append(
+                    ('error', &quot;Validation error '%s'.&quot; % e))
+            if index &gt; 0:
+                cert_store.add_cert(cert)
+        return msgs
+
+
+    def check(self, domain,domain_certs,utcnow):
+        msgs = []
+        results = []
+
+        earliest_expiration = None
+        if domain_certs is None: return (msgs, earliest_expiration, None)
+        if isinstance(domain_certs, Exception): 
+            domain_certs = &quot;&quot;.join(traceback.format_exception_only(type(domain_certs),domain_certs)).strip()
+        msgs = self.validate_cert(domain_certs)
+        for i, cert in enumerate(domain_certs):
+            result = {}
+            subject = cert.get_subject().commonName
+            result[&quot;subject&quot;] = subject
+            expires = datetime.datetime.strptime(cert.get_notAfter().decode('ascii'), '%Y%m%d%H%M%SZ')
+            result[&quot;expires&quot;] = str(expires)
+
+            if expires:
+                if earliest_expiration is None or expires &lt; earliest_expiration:
+                    earliest_expiration = expires
+            issued_level = &quot;info&quot;
+            issuer = cert.get_issuer().commonName
+            if issuer:
+                if issuer.lower() == &quot;happy hacker fake ca&quot;:
+                    issued_level = &quot;error&quot;
+            else:
+                issued_level = 'warning'    
+            msgs.append((issued_level, &quot;Issued by: %s (subject: %s)&quot; % (issuer, subject)))
+            result[&quot;issuer&quot;] = issuer
+
+            results.append(result)
+
+            if i &lt; len(domain_certs) - 1:
+                sign_cert = domain_certs[i+1]
+                subject = sign_cert.get_subject().commonName
+                if issuer != subject:
+                    msgs.append(
+                        ('error', &quot;The certificate sign chain subject '%s' doesn't match the issuer '%s'.&quot; % (subject, issuer)))
+
+            sig_alg = cert.get_signature_algorithm()
+            if sig_alg.startswith(b'sha1'):
+                msgs.append(('error', &quot;Unsecure signature algorithm %s (subject: %s)&quot; % (sig_alg, subject)))
+            if expires &lt; utcnow:
+                msgs.append(
+                    ('error', &quot;The certificate has expired on %s (subject: %s)&quot; % (expires, subject)))
+            elif expires &lt; (utcnow + datetime.timedelta(days=15)):
+                msgs.append(
+                    ('warning', &quot;The certificate expires on %s (%s) (subject: %s)&quot; % (
+                        expires, expires - utcnow, subject)))
+            else:
+                delta = ((expires - utcnow) // 60 // 10 ** 6) * 60 * 10 ** 6
+                msgs.append(
+                    ('info', &quot;Valid until %s (%s).&quot; % (expires, delta)))
+        
+        return (msgs, earliest_expiration, results)
+
+
+    def checkCertChain(self, domain):
+        domain = domain.replace(&quot;http://&quot;,&quot;&quot;)
+        domain = domain.replace(&quot;https://&quot;,&quot;&quot;)
+        domain = domain.split('/')[0]
+        domain_certs = self.get_domain_certs(domain)
+
+        if isinstance(domain_certs, Exception):
+            output = {
+                &quot;result&quot;: &quot;Invalid&quot;,
+                &quot;errors&quot;: [&quot;Unable to obtain certficate chain&quot;],
+                &quot;warnings&quot;: [],
+                &quot;details&quot;: []
+            }
+            return output
+
+        utcnow = datetime.datetime.now()
+        (msgs, earliest_expiration, results) = self.check(domain,domain_certs,utcnow)
+
+        warnings = []
+        output = {}
+        output[&quot;details&quot;] = results
+        errors = []
+        for level, msg in msgs:
+            if level == 'error': 
+                errors.append(msg)
+            elif level == 'warning':
+                warnings.append(msg)
+        
+        output[&quot;errors&quot;] = errors
+        output[&quot;warnings&quot;] = warnings
+
+        if len(errors) &gt; 0:
+            output[&quot;result&quot;] = &quot;Invalid&quot; 
+        elif len(warnings) &gt; 0:
+            output[&quot;result&quot;] = &quot;Valid (with Warnings)&quot;
+        else: output[&quot;result&quot;] = &quot;Valid&quot;
+        
+        return output
+
+
+</code></pre>
+<h3 id="4-xss-detection"><a class="header" href="#4-xss-detection">4. XSS Detection</a></h3>
+<h3 id="41-mainpy"><a class="header" href="#41-mainpy">4.1 main.py</a></h3>
+<pre><code class="language-python">import uvicorn
+from fastapi import FastAPI
+from fastapi.openapi.utils import get_openapi
+from starlette.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+import v1
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware, allow_origins=[&quot;http://localhost:8000&quot;], allow_methods=[&quot;*&quot;], allow_headers=[&quot;*&quot;]
+)
+
+@app.get(&quot;/&quot;, tags=[&quot;root&quot;])
+def get_root():
+    return RedirectResponse(&quot;/v1/&quot;)
+
+
+app.include_router(
+    v1.router,
+    prefix=&quot;/v1&quot;,
+    tags=[&quot;vulnerability scanning (version 1)&quot;],
+    responses={404: {&quot;description&quot;: &quot;Not found&quot;}},
+)
+
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title=&quot;WAVS: Web App Vulnerability Scanner&quot;,
+        version=&quot;0.0.1&quot;,
+        description=&quot;&quot;&quot;WAVS (Web App Vulnerability Scanner) is a tool to scan &amp; test URLs for certain vulnerabilities &amp; 
+        security issues by simply inspecting the corresponding client-side website. The overall system would include a 
+        virtual server with modules for detecting the different vulnerabilities, along with a proxy server, to direct 
+        requests from a browser to the virtual server first while visiting a website. The proxy could warn the user before 
+        redirecting to the website if some vulnerabilities are found during the scan done by our virtual server.
+        \nWe identify &amp; assess the following security issues that a website may suffer from: _Absence of Valid TLS Certificates_, 
+        _Cross-Site Scripting (XSS)_, _Potential Phishing Attempts_ &amp; _Open Redirection_
+        &quot;&quot;&quot;,
+        routes=app.routes,
+    )
+    openapi_schema[&quot;info&quot;][&quot;x-logo&quot;] = {
+        &quot;url&quot;: &quot;https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png&quot;
+    }
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
+
+if __name__ == &quot;__main__&quot;:
+    uvicorn.run(&quot;main:app&quot;, host=&quot;localhost&quot;, port=9000)
+
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+                            <a rel="next" href="proxy-code.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+                    <a rel="next" href="proxy-code.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
